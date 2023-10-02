@@ -1,6 +1,5 @@
 
-USE PortfolioProject
-
+USE PortfolioProject;
 
 SELECT *
 FROM PortfolioProject..CovidDeaths
