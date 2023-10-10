@@ -73,7 +73,7 @@ ORDER BY Percent_population_infected DESC
 --5.Countries with the highest death count per population
 
 SELECT
-    location,  MAX(CAST(total_deaths as INT)) AS TotalDeathCount 
+    location,  SUM(CAST(new_deaths as INT)) AS TotalDeathCount 
 FROM CovidDeaths
 WHERE Continent IS NOT NULL
 GROUP BY location 
@@ -84,7 +84,7 @@ ORDER BY  TotalDeathCount  DESC;
 --2.Continents with the highest death count per population 
 
 SELECT
-     Continent, MAX(CAST(total_deaths as INT)) AS TotalDeathCount 
+     Continent, SUM(CAST(new_deaths as INT)) AS TotalDeathCount 
 FROM CovidDeaths
 WHERE Continent IS NOT NULL
 GROUP BY Continent
