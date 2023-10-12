@@ -52,7 +52,7 @@ ORDER BY 1,2;
 
 
 
---3,4.looking at countries with Total Deaths and highest infection rate compared to population & Date
+--3,4. looking at countries with Total Deaths and highest infection rate compared to population & Date
 
 SELECT
     location, --Date,
@@ -71,7 +71,7 @@ ORDER BY Percent_population_infected DESC
 
 
 
---5.Countries with the highest death count and Total cases per population
+--5. Countries with the highest death count and Total cases 
 
 SELECT
     location, SUM(CAST(new_cases AS INT)) AS TotalCases, SUM(CAST(new_deaths as INT)) AS TotalDeathCount 
@@ -82,7 +82,7 @@ ORDER BY  TotalDeathCount  DESC;
 
 
 
---2.Continents with the highest death count per population 
+--2. Continents with the highest death count  
 
 SELECT
      Continent, SUM(CAST(new_deaths as INT)) AS TotalDeathCount 
@@ -93,7 +93,7 @@ ORDER BY  TotalDeathCount  DESC;
 
 
 
---1.GLOBAL NUMBERS
+--1. GLOBAL NUMBERS
 
 SELECT --Date,
        SUM(new_cases)as Total_cases,
