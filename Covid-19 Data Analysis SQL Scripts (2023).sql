@@ -52,11 +52,12 @@ ORDER BY 1,2;
 
 
 
---3,4.looking at countries with highest infection rate compared to population & Date
+--3,4.looking at countries with Total Deaths and highest infection rate compared to population & Date
 
 SELECT
     location, --Date,
     population,
+    SUM(CAST(new_deaths as INT)) AS TotalDeathCount,
     MAX(CAST(total_cases AS INT)) AS Highest_infection_count,
     CASE
         WHEN  MAX(CAST(total_cases AS INT)) IS NOT NULL AND  MAX(CAST(total_cases AS INT)) > 0
@@ -70,10 +71,10 @@ ORDER BY Percent_population_infected DESC
 
 
 
---5.Countries with the highest death count per population
+--5.Countries with the highest death count and Total cases per population
 
 SELECT
-    location,  SUM(CAST(new_deaths as INT)) AS TotalDeathCount 
+    location, SUM(CAST(new_cases AS INT)) AS TotalCases, SUM(CAST(new_deaths as INT)) AS TotalDeathCount 
 FROM CovidDeaths
 WHERE Continent IS NOT NULL
 GROUP BY location 
