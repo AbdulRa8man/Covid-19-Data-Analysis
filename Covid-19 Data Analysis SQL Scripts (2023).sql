@@ -25,7 +25,7 @@ SELECT
     total_deaths, 
     CASE 
         WHEN (total_cases  IS NOT NULL AND total_deaths  IS NOT NULL) AND total_cases > 0 
-		THEN (CAST(total_deaths AS FLOAT) * 100 / CAST(total_cases AS FLOAT))
+	THEN (CAST(total_deaths AS FLOAT) * 100 / CAST(total_cases AS FLOAT))
         ELSE NULL  -- Result is NULL if either total_cases or total_deaths is NULL or total_cases is 0
     END as Death_Percentage
 FROM CovidDeaths
@@ -99,8 +99,8 @@ SELECT --Date,
        SUM(new_cases)as Total_cases,
        SUM(new_deaths) as Total_deaths,
       CASE
-	    WHEN (SUM(new_cases) IS NOT NULL AND SUM(new_deaths) IS NOT NULL) AND SUM(new_cases) > 0 
-		THEN (CAST(SUM(new_deaths) AS FLOAT)/ CAST(SUM(new_cases) AS FLOAT)) * 100 
+        WHEN (SUM(new_cases) IS NOT NULL AND SUM(new_deaths) IS NOT NULL) AND SUM(new_cases) > 0 
+	THEN (CAST(SUM(new_deaths) AS FLOAT)/ CAST(SUM(new_cases) AS FLOAT)) * 100 
         ELSE NULL  
       END as DeathPercentage
 FROM CovidDeaths
