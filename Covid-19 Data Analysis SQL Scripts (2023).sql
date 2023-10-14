@@ -125,34 +125,12 @@ ORDER BY 2,3
 
 
 
---Using CTE to get the Vaccination Percentage
-
-WITH PopVsVac (Continent, location, date, population, new_vaccinations, Total_vaccinations)
-AS
-(
-SELECT dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations,
-SUM(CONVERT(BIGINT,vac.new_vaccinations )) 
-OVER (Partition by dea.location ORDER BY dea.location, dea.Date) AS Total_vaccinations
-FROM CovidDeaths dea
-Join CovidVaccinations vac
-ON dea.location = vac.location
-AND dea.date = vac.date
-WHERE dea.Continent IS NOT NULL
---WHERE dea.location LIKE 'Canada'
---ORDER BY 2,3
-) 
-SELECT *, (Total_vaccinations/Population)*100 AS  VaccinationPercentage
-FROM PopVsVac
-ORDER BY 2,3
-
-
-
 
 -- Create a Temp Table to get the Vaccination Percentage
 
 CREATE TABLE #PercentPopulationVaccinated (
     Continent NVARCHAR(255),
-    Location NVARCHAR(255),
+    Location NVARCHAR(255), 
     Date DATETIME,
     Population FLOAT,
     New_Vaccinations BIGINT,
