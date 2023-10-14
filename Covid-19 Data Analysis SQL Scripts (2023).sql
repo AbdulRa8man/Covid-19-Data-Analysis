@@ -122,6 +122,28 @@ AND dea.date = vac.date
 WHERE dea.Continent IS NOT NULL
 --WHERE dea.location LIKE 'Canada'
 ORDER BY 2,3
+	
+
+
+
+--Creating view to store data for later visualizations
+
+CREATE VIEW PercentPopulationVaccinated as
+SELECT dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations,
+SUM(CONVERT(BIGINT, vac.new_vaccinations)) 
+OVER (Partition by dea.location ORDER BY dea.location, dea.Date) AS Total_vaccinations
+FROM CovidDeaths dea
+Join CovidVaccinations vac
+ON dea.location = vac.location
+AND dea.date = vac.date
+WHERE dea.Continent IS NOT NULL
+--ORDER BY 2,3;
+
+
+SELECT *
+FROM PercentPopulationVaccinated
+ORDER BY 2,3
+	
 
 
 
@@ -152,20 +174,4 @@ ORDER BY 2, 3;
 
 
 
---Creating view to store data for later visualizations
 
-CREATE VIEW PercentPopulationVaccinated as
-SELECT dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations,
-SUM(CONVERT(BIGINT, vac.new_vaccinations)) 
-OVER (Partition by dea.location ORDER BY dea.location, dea.Date) AS Total_vaccinations
-FROM CovidDeaths dea
-Join CovidVaccinations vac
-ON dea.location = vac.location
-AND dea.date = vac.date
-WHERE dea.Continent IS NOT NULL
---ORDER BY 2,3;
-
-
-SELECT *
-FROM PercentPopulationVaccinated
-ORDER BY 2,3
