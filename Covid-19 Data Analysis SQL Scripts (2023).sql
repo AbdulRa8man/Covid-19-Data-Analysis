@@ -6,9 +6,9 @@ FROM PortfolioProject..CovidDeaths
 WHERE Continent IS NOT NULL
 ORDER BY 3,4
 
---SELECT * 
---FROM PortfolioProject..Covidvaccinations
---ORDER BY 3,4
+SELECT * 
+FROM PortfolioProject..Covidvaccinations
+ORDER BY 3,4
 
 
 SELECT Location, Date, Total_cases, New_cases, Total_deaths, Population
