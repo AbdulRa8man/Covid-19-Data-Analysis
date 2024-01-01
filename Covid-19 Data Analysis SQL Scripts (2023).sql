@@ -64,7 +64,7 @@ SELECT
     END AS Percent_population_infected
 FROM CovidDeaths
 WHERE Continent IS NOT NULL
-GROUP BY location, population --,Date
+GROUP BY location, population, Date
 ORDER BY Percent_population_infected DESC 
 
 
@@ -93,7 +93,7 @@ ORDER BY  TotalDeathCount  DESC;
 
 --4. GLOBAL NUMBERS
 
-SELECT --Date,
+SELECT 
        SUM(new_cases)as Total_cases,
        SUM(new_deaths) as Total_deaths,
       CASE
@@ -103,12 +103,11 @@ SELECT --Date,
       END as DeathPercentage
 FROM CovidDeaths
 WHERE Continent IS NOT NULL
---GROUP BY Date
 ORDER BY 1,2;
 
 
 
---Looking at total population vs. vaccinations
+--5. Looking at total population vs. vaccinations
 
 SELECT dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations,
 SUM(CONVERT(BIGINT,vac.new_vaccinations )) 
@@ -122,28 +121,8 @@ WHERE dea.Continent IS NOT NULL
 ORDER BY 2,3
 	
 
-
---Creating view to store data for later visualizations
-
-CREATE VIEW PercentPopulationVaccinated as
-SELECT dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations,
-SUM(CONVERT(BIGINT, vac.new_vaccinations)) 
-OVER (Partition by dea.location ORDER BY dea.location, dea.Date) AS total_vaccinations
-FROM CovidDeaths dea
-Join CovidVaccinations vac
-ON dea.location = vac.location
-AND dea.date = vac.date
-WHERE dea.Continent IS NOT NULL
---ORDER BY 2,3;
-
-
-SELECT *
-FROM PercentPopulationVaccinated
-ORDER BY 2,3
 	
-
-
--- Create a Temp Table to get the Vaccination Percentage
+--6. Create a Temp Table to get the Vaccination Percentage
 
 SELECT dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations,
 SUM(CONVERT(BIGINT, vac.new_vaccinations)) 
