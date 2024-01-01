@@ -107,7 +107,23 @@ ORDER BY 1,2;
 
 
 
---5. Looking at total population vs. vaccinations
+--5. looking at countries with Total Vaccinations compared to population & Date
+
+SELECT  vac.location, CONVERT(DATE,vac.date) AS Date, dea.population, 
+        CAST(MAX(vac.total_vaccinations) AS BIGINT) AS Total_vaccinations,
+        CAST(MAX(vac.people_vaccinated) AS BIGINT) AS People_partially_vaccianted,
+	CAST(MAX(vac.people_fully_vaccinated) AS BIGINT) AS People_fully_vaccinated
+FROM CovidDeaths dea
+Join CovidVaccinations vac
+ON dea.location = vac.location
+AND dea.date = vac.date
+WHERE dea.Continent IS NOT NULL
+GROUP BY vac.location, CONVERT(DATE,vac.date), dea.population
+ORDER BY 3 DESC	
+
+
+
+--6. Looking at total population vs. vaccinations
 
 SELECT dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations,
 SUM(CONVERT(BIGINT,vac.new_vaccinations )) 
@@ -119,10 +135,10 @@ AND dea.date = vac.date
 WHERE dea.Continent IS NOT NULL
 --WHERE dea.location LIKE 'Canada'
 ORDER BY 2,3
-	
 
 	
---6. Create a Temp Table to get the Vaccination Percentage
+
+--7. Create a Temp Table to get the Vaccination Percentage
 
 SELECT dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations,
 SUM(CONVERT(BIGINT, vac.new_vaccinations)) 
