@@ -1,13 +1,13 @@
 
-USE PortfolioProject;
+USE PortfolioProjects;
 
 SELECT *
-FROM PortfolioProject..CovidDeaths
+FROM CovidDeaths
 WHERE Continent IS NOT NULL
 ORDER BY 3,4
 
 SELECT * 
-FROM PortfolioProject..Covidvaccinations
+FROM Covidvaccinations
 ORDER BY 3,4
 
 
@@ -30,7 +30,6 @@ SELECT
     END as Death_Percentage
 FROM CovidDeaths
 WHERE Continent IS NOT NULL
---WHERE location  LIKE '%States%'
 ORDER BY location, date;
 
 
@@ -47,15 +46,14 @@ SELECT
 	END AS PercentPopulationInfected
 FROM CovidDeaths
 WHERE Continent IS NOT NULL
---WHERE location LIKE '%states%'
 ORDER BY 1,2;
 
 
 
---3,4. looking at countries with Total Deaths and highest infection rate compared to population & Date
+--1. looking at countries with Total Deaths and highest infection rate compared to population & Date
 
 SELECT
-    location, --Date,
+    location, Date
     population,
     SUM(CAST(new_deaths as INT)) AS TotalDeathCount,
     MAX(CAST(total_cases AS INT)) AS Highest_infection_count,
@@ -71,7 +69,7 @@ ORDER BY Percent_population_infected DESC
 
 
 
---5. Countries with the highest death count and Total cases 
+--2. Countries with the highest death count and Total cases 
 
 SELECT
     location, SUM(CAST(new_cases AS INT)) AS TotalCases, SUM(CAST(new_deaths as INT)) AS TotalDeathCount 
@@ -82,7 +80,7 @@ ORDER BY  TotalDeathCount  DESC;
 
 
 
---2. Continents with the highest death count  
+--3. Continents with the highest death count  
 
 SELECT
      Continent, SUM(CAST(new_deaths as INT)) AS TotalDeathCount 
@@ -93,7 +91,7 @@ ORDER BY  TotalDeathCount  DESC;
 
 
 
---1. GLOBAL NUMBERS
+--4. GLOBAL NUMBERS
 
 SELECT --Date,
        SUM(new_cases)as Total_cases,
@@ -125,7 +123,6 @@ ORDER BY 2,3
 	
 
 
-
 --Creating view to store data for later visualizations
 
 CREATE VIEW PercentPopulationVaccinated as
@@ -146,22 +143,12 @@ ORDER BY 2,3
 	
 
 
-
-
 -- Create a Temp Table to get the Vaccination Percentage
 
-CREATE TABLE #PercentPopulationVaccinated (
-    Continent NVARCHAR(255),
-    Location NVARCHAR(255), 
-    Date DATETIME,
-    Population FLOAT,
-    New_Vaccinations BIGINT,
-    Total_Vaccinations BIGINT );
-
-INSERT INTO #PercentPopulationVaccinated (Continent, Location, Date, Population, New_Vaccinations, Total_Vaccinations)
 SELECT dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations,
 SUM(CONVERT(BIGINT, vac.new_vaccinations)) 
 OVER (Partition by dea.location ORDER BY dea.location, dea.Date) AS Total_vaccinations
+INTO #PercentPopulationVaccinated
 FROM CovidDeaths dea
 Join CovidVaccinations vac
 ON dea.location = vac.location
