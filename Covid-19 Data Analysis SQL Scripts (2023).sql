@@ -7,7 +7,7 @@ WHERE Continent IS NOT NULL
 ORDER BY 3,4
 
 SELECT * 
-FROM Covidvaccinations
+FROM CovidVaccinations
 ORDER BY 3,4
 
 
@@ -50,12 +50,12 @@ ORDER BY 1,2;
 
 
 
---1. looking at countries with Total Deaths and highest infection rate compared to population & Date
+--1. looking at countries with Total Deaths, infection percentage and highest infection count compared to population & Date
 
 SELECT
     location, Date
     population,
-    SUM(CAST(new_deaths as INT)) AS TotalDeathCount,
+    SUM(CAST(new_deaths as INT)) AS Total_Death_Count,
     MAX(CAST(total_cases AS INT)) AS Highest_infection_count,
     CASE
         WHEN  MAX(CAST(total_cases AS INT)) IS NOT NULL AND  MAX(CAST(total_cases AS INT)) > 0
@@ -69,25 +69,25 @@ ORDER BY Percent_population_infected DESC
 
 
 
---2. Countries with the highest death count and Total cases 
+--2. Countries with the highest death count and total cases 
 
 SELECT
-    location, SUM(CAST(new_cases AS INT)) AS TotalCases, SUM(CAST(new_deaths as INT)) AS TotalDeathCount 
+    location, SUM(CAST(new_cases AS INT)) AS Total_Cases, SUM(CAST(new_deaths as INT)) AS Total_Death_Count 
 FROM CovidDeaths
 WHERE Continent IS NOT NULL
 GROUP BY location 
-ORDER BY  TotalDeathCount  DESC;
+ORDER BY  Total_Death_Count  DESC;
 
 
 
 --3. Continents with the highest death count  
 
 SELECT
-     Continent, SUM(CAST(new_deaths as INT)) AS TotalDeathCount 
+     Continent, SUM(CAST(new_deaths as INT)) AS Total_Death_Count 
 FROM CovidDeaths
 WHERE Continent IS NOT NULL
 GROUP BY Continent
-ORDER BY  TotalDeathCount  DESC;
+ORDER BY  Total_Death_Count  DESC;
 
 
 
@@ -100,7 +100,7 @@ SELECT
         WHEN (SUM(new_cases) IS NOT NULL AND SUM(new_deaths) IS NOT NULL) AND SUM(new_cases) > 0 
 	THEN (CAST(SUM(new_deaths) AS FLOAT)/ CAST(SUM(new_cases) AS FLOAT)) * 100 
         ELSE NULL  
-      END as DeathPercentage
+      END as Death_Percentage
 FROM CovidDeaths
 WHERE Continent IS NOT NULL
 ORDER BY 1,2;
@@ -153,6 +153,7 @@ WHERE dea.Continent IS NOT NULL;
 SELECT *, (Total_vaccinations / Population) * 100 AS vaccinationPercentage
 FROM  #PercentPopulationVaccinated
 ORDER BY 2, 3;
+
 
 
 
